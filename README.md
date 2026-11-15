@@ -1,20 +1,19 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg">
+  <img src="https://img.shields.io/badge/language-PowerShell-powershell?logo=powershell&labelColor=2d2d2d">
+</p>
+
 # Cloudflare WARP - Scripts PowerShell
 
-> 💡 **PILDORA 1**: WARP en modo `warp` (túnel completo) **SI rota IPs** al reconectar. El método correcto es `warp-cli disconnect + connect`, NO usar `net stop/start` del servicio.
+Scripts para gestionar el cliente Cloudflare WARP.
 
-> ⚠️ **PILDORA 2**: El instalador aparece como "Cloudflare One Client" en el menú de inicio. El ejecutable está en: `C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe`
+## Tabla de contenidos
 
-> 🚨 **PILDORA 3**: Para rotar IP, usa siempre `.\warp-flip.ps1` desde PowerShell. El script incluye fallback a api.ipify.org si Cloudflare falla.
-
-## Scripts disponibles
-
-| Archivo | Propósito |
-|---------|-----------|
-| `warp-connect.ps1` | Conectar a Cloudflare WARP |
-| `warp-disconnect.ps1` | Desconectar de Cloudflare WARP |
-| `warp-flip.ps1` | Rotar IP (método disconnect + connect) |
-| `warp-status.ps1` | Ver estado actual con IPv4 e IPv6 |
-| `warp-menu.ps1` | Menú interactivo interactivo |
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Scripts](#scripts)
+- [Rotación de IPs](#rotación-de-ips)
+- [Solución de problemas](#solución-de-problemas)
 
 ## Instalación
 
@@ -44,7 +43,19 @@
 .\warp-menu.ps1
 ```
 
+## Scripts
+
+| Archivo | Propósito |
+|---------|-----------|
+| `warp-connect.ps1` | Conectar a Cloudflare WARP |
+| `warp-disconnect.ps1` | Desconectar de Cloudflare WARP |
+| `warp-flip.ps1` | Rotar IP (método disconnect + connect) |
+| `warp-status.ps1` | Ver estado actual con IPv4 e IPv6 |
+| `warp-menu.ps1` | Menú interactivo |
+
 ## Rotación de IPs
+
+**Importante**: WARP en modo `warp` (túnel completo) **SI rota IPs** al reconectar.
 
 **Método correcto:**
 ```powershell
@@ -73,14 +84,6 @@ No están en el PATH. Usar siempre la ruta completa:
 1. Verificar estado de conexión: `warp-cli.exe status`
 2. Verificar modo WARP: `warp-cli.exe mode`
 3. Asegurar que el modo es `warp` (túnel completo)
-
-## Comandos rápidos
-
-Desde `warp-status.ps1`, verás al final:
-```powershell
-# Comandos rápidos
-  .\warp-flip.ps1            : Rotar IP
-```
 
 ## Archivos
 
