@@ -2,7 +2,7 @@
 
 Scripts de PowerShell para rotar direcciones IP usando Cloudflare WARP.
 
-## ¿Qué hace?
+## Qué hace?
 
 Estos scripts te permiten rotar tu IP pública (IPv4 e IPv6) cuando Cloudflare WARP está instalado en tu sistema. Ideal para evitar rate limits en servicios como OpenCode.
 
@@ -11,6 +11,8 @@ Estos scripts te permiten rotar tu IP pública (IPv4 e IPv6) cuando Cloudflare W
 | Archivo | Propósito |
 |---------|-----------|
 | `warp-flip.ps1` | Rotar IP (método disconnect + connect) |
+| `warp-connect.ps1` | Conectar WARP |
+| `warp-disconnect.ps1` | Desconectar WARP |
 | `warp-status.ps1` | Ver estado actual con IPv4 e IPv6 |
 | `warp-menu.ps1` | Menú interactivo para rotar IP o ver estado |
 
@@ -25,30 +27,38 @@ cd F:\Proyectos\warp-scripts
 # Ver estado actual
 .\warp-status.ps1
 
+# Conectar/WARP
+.\warp-connect.ps1
+
+# Desconectar WARP
+.\warp-disconnect.ps1
+
 # Menu interactivo
 .\warp-menu.ps1
 ```
 
+## Version
+
+- **Versión**: 1.1.0
+- **Fecha**: 2026-11-15
+- **Repositorio**: https://github.com/StiviS/warp-scripts
+
 ---
 
-## Instrucciones de instalacion
+## Instrucciones de instalación
 
 ### 1. Instalar Cloudflare WARP via winget
 
 ```powershell
-# Ejecutar como administrador
 winget install --id Cloudflare.Warp
 ```
 
 > El instalador aparecerá como "Cloudflare One Client" en el menú de inicio.
 
-### 2. Verificar instalacion
+### 2. Verificar instalación
 
 ```powershell
-# Verificar que el servicio esta instalado
 Get-Service "Cloudflare One Client"
-
-# Verificar que warp-cli.exe existe
 Test-Path "C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe"
 ```
 
@@ -58,22 +68,17 @@ Test-Path "C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe"
 2. Hacer clic en "Turn On"
 3. Seleccionar "Tráfico y DNS (TLS)" cuando solicite permiso
 
-### 4. Verificar conexion
+### 4. Verificar conexión
 
 ```powershell
-# Verificar estado
 .\warp-status.ps1
-
-# O desde PowerShell
-$warpCli = "C:\Program Files\Cloudflare\Cloudflare WARP\warp-cli.exe"
-& $warpCli status
 ```
 
 ---
 
 ## Descubrimiento clave
 
-WARP en modo **warp** (túnel completo) SI rota IPs al reconectar usando `warp-cli connect/disconnect`.
+WARP en modo **warp** (tunel completo) SI rota IPs al reconectar usando `warp-cli connect/disconnect`.
 
 ### Metodo correcto:
 ```powershell
@@ -96,7 +101,7 @@ Start-Sleep 3
 
 ---
 
-## Solucion de problemas
+## Solución de problemas
 
 ### IP no cambia después de warp-flip.ps1
 
@@ -105,17 +110,15 @@ En Cloudflare gratuito, puede ser normal que la IP no cambie inmediatamente. Esp
 ### WARP no esta instalado
 
 ```powershell
-# Instalar vía winget
 winget install --id Cloudflare.Warp
-
-# O descargar desde:
-# https://developers.cloudflare.com/cloudflare-one/connections/client-app/warp/download-guide/
 ```
+
+O descargar desde:
+https://developers.cloudflare.com/cloudflare-one/connections/client-app/warp/download-guide/
 
 ### Servidor proxy local no esta escuchando
 
 ```powershell
-# Verificar puerto 40000
 Test-NetConnection -ComputerName localhost -Port 40000
 ```
 
@@ -137,7 +140,7 @@ Cloudflare WARP no agrega warp-cli al PATH por defecto. Usa siempre la ruta comp
 
 Cuando ejecutas `.\warp-flip.ps1`, estás rotando la IP de tu **conexión a internet en nivel de sistema**. Tanto OpenCode como cualquier otra aplicación que use tu conexión directa utilizarán la nueva IP automáticamente.
 
-**Sin embargo**, esto solo funciona cuando:
+Esto solo funciona cuando:
 - OpenCode hace conexiones DIRECTAS a internet
 - No estás usando un proxy HTTP/SOCKS configurado en OpenCode
 - No estás detrás de un proxy corporativo
@@ -147,15 +150,15 @@ Cuando ejecutas `.\warp-flip.ps1`, estás rotando la IP de tu **conexión a inte
 2. Reinicia OpenCode después de rotar IP
 3. Si usas proxy explícito, configúralo en OpenCode con la nueva IP
 
-### ¿Que hace warp-flip.ps1?
+### Qué hace warp-flip.ps1?
 
-Desconecta y vuelve a conectar WARP, lo que fuerza a Cloudflare asignarte una IP nueva (en el caso de Cloudflare gratuito). También muestra tanto IPv4 como IPv6.
+Desconecta y vuelve a conectar WARP, lo que fuerza a Cloudflare asignarte una IP nueva. Muestra tanto IPv4 como IPv6.
 
-### ¿Por que net stop/start no funciona?
+### Por qué net stop/start no funciona?
 
 El servicio de Windows `Cloudflare One Client` solo maneja el estado del servicio, no la lógica de rotación de IPs. La rotación real la maneja el binario `warp-cli.exe` con los comandos `disconnect` y `connect`.
 
-### ¿Cuantas IPs diferentes puedo obtener?
+### Cuantas IPs diferentes puedo obtener?
 
 Con Cloudflare gratuito, obtienes IPs de los nodos de Cloudflare (IPv6). La cantidad de IPs únicas depende del nodo y la carga del servidor. En nuestras pruebas, 10 reconexiones produjeron 10 IPs distintas.
 
@@ -170,3 +173,9 @@ Con Cloudflare gratuito, obtienes IPs de los nodos de Cloudflare (IPv6). La cant
 ## Importante
 
 El método correcto para rotar IPs es usar `warp-cli connect/disconnect`, NO el servicio de Windows con `net stop/start`.
+
+---
+
+## Changelog
+
+Ver [CHANGELOG.md](CHANGELOG.md) para historial de cambios.
