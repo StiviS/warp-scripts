@@ -1,5 +1,9 @@
 # Instrucciones para agentes - Scripts Cloudflare WARP
 
+## Licencia
+
+MIT License - Ver archivo `LICENSE`
+
 ## Qué es este proyecto
 
 Repositorio de scripts PowerShell para gestionar el cliente Cloudflare WARP:
